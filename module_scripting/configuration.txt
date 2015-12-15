@@ -1,0 +1,10 @@
+{
+"inputs_text": "C:\\Users\\Johanna\\Documents\\LawStuff\\module_scripting\\inputs.txt",
+"sikuli_cmd": "C:\\Users\\Johanna\\SikuliX\\runsikulix.cmd",
+"script_path": "C:\\Users\\Johanna\\Documents\\LawStuff\\module_scripting\\",
+"results_folder": "C:\\Users\\Johanna\\Documents\\LawStuff\\module_scripting\\results",
+"run_epi": false,
+"run_test": true,
+"run_vega": false,
+"test_epi_parser": false
+}
