@@ -1,0 +1,32 @@
+'''
+Created on May 19, 2015
+
+@author: rsong_admin
+'''
+
+
+
+
+if __name__ == '__main__':
+    class_count=dict()
+    fhand=open('./data/DTSC_classification_chembook.csv')
+    for line in fhand:
+        line=line.rstrip()
+        line=line.split(',')
+        #strip CAS number:
+        if line[1]is '':
+            
+
+        else: 
+            for name in line:
+                if name is not '':
+                    '''deal with dict here'''
+    
+                    print name[:]
+        
+       
+    
+    
+    
+    
+    

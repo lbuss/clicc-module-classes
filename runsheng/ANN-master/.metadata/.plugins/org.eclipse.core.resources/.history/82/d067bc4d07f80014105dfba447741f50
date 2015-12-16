@@ -1,0 +1,32 @@
+'''
+Created on May 5, 2015
+
+@author: rsong_admin
+'''
+
+import chembook
+from chembook import ChemBookSearch
+
+
+
+iter=0
+with open('DTSC_CAS.csv') as myfile:
+    for cas in myfile:
+        if cas is not None:
+            cas=cas.rstrip()
+            iter=iter+1
+            print cas
+            test1=ChemBookSearch()
+            try:
+                test1.findChemical(cas)
+            except:
+                print "looking for chemical failed at ", iter
+                raw_input("Paused")
+                
+            print "Iter at ", iter,'File saved'
+        else:
+            print "Empty CAS!"
+
+print "Finished!"
+
+

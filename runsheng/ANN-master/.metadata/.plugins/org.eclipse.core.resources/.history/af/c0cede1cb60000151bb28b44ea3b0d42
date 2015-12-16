@@ -1,0 +1,138 @@
+'''
+Created on Apr 29, 2015
+
+@author: rsong_admin
+'''
+
+import ANN_setup as ann
+import pca
+import numpy as np
+import csv
+from bokeh._glyph_functions import line
+from llvmpy.api.llvm import raw_ostream
+import datetime
+
+
+def train_or_use(descs_name,target_name=None,network_name=None,train=True):
+    if train:
+        
+        
+        '''
+        This train a new network
+        '''
+        CED=ann.ANN(descs_name,target_name)
+        
+        CED.do_pca(threshold_input=0.90)
+        
+        raw_input("hahaha")
+        
+        CED.set_dataset()
+        
+        #CED.CrossValidation(num_neuron=150)
+        #print "CV finished!", datetime.datetime.now()
+        
+        CED.train_net(training_times_input=1000, num_neroun=600,learning_rate_input=0.001,weight_decay=0.2 ,momentum_in=0, verbose_input=True)
+     
+     
+        
+        raw_input("Going to do prediction on test data")
+        pred_results=CED.predict(CED.network,CED.tstdata['input'])
+        print CED.calc_accuracy(CED.tstdata['class'], pred_results)
+        
+        raw_input("Going to save this network?")
+#         #CED.plot_diff(CED.target, CED.predicted_value)
+        CED.save_network(network_name)
+        
+        
+    else:
+        
+        '''
+        This load the exsisting network and run prediction on it
+        '''
+        
+        CED=ann.ANN(descs_name)
+        CED.load_network(network_name)
+        CED.do_pca(CED.network.indim)
+        
+        prediction_results=CED.predict(CED.network,CED.descriptors_pca)
+        
+        Y=np.loadtxt(target_name,delimiter=',')
+
+        print CED.calc_accuracy(Y, prediction_results)
+        
+        raw_input("hahaha")
+        
+        save_name=target_name.replace('.csv','')
+        save_name=save_name+'_prediction.csv'
+        
+        np.savetxt(save_name, prediction_results, delimiter=',')
+        print "prediction output saved!"
+        
+
+
+if __name__ == '__main__':
+    
+
+    
+    
+    train_or_use('./data/kaggle/train_num.csv', './data/kaggle/Y_num_label.csv', './net/Hand_writ_recg.xml', train=True)
+    
+    
+  
+#     inputfile=open('./data/TEST_descs_271.csv','rb')
+#     output=open('./data/TEST_descs_271_int.csv','wb')
+#     filewriter=csv.writer(output)
+#     for line in inputfile:
+#          
+#         line=line.rstrip()
+#         line=line.split(',')
+#         for n,i in enumerate(line):
+#             if i=='?':
+#                 line[n]=0
+#             elif i=='-?':
+#                 line[n]=0
+#                  
+#         filewriter.writerow(line)
+                     
+            
+           
+            
+    
+
+    
+    
+    
+    
+    '''
+    all_X=np.loadtxt('./data/descs_noNAs_Chem_app.csv',delimiter=',')
+    all_Y=np.loadtxt('./data/Y.csv')
+    
+    index=np.random.permutation(280)
+    index_trn=index[0:200]
+    index_tst=index[201:280]
+    
+    trn_X=all_X[index_trn,:]
+    trn_Y=all_Y[index_trn]
+    
+    tst_X=all_X[index_tst,:]
+    tst_Y=all_Y[index_tst]
+    
+    
+    np.savetxt("./data/trn_X.csv",trn_X,delimiter=',')
+    np.savetxt("./data/trn_Y.csv",trn_Y,delimiter=',')
+    np.savetxt("./data/tst_X.csv",tst_X,delimiter=',')
+    np.savetxt("./data/tst_Y.csv",tst_Y,delimiter=',')
+    '''
+   
+    
+ 
+ 
+    
+
+
+
+    
+    
+
+    
+   
