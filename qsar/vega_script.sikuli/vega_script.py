@@ -1,9 +1,10 @@
 import sys
 print sys.argv
+
 smiles_location = sys.argv[1]
 output_folder = sys.argv[2]
 
-switchApp("VegaNIC")
+switchApp("VEGA in silico")
 if exists("1444947945179.png"):
     click("1444947945179.png")
 click(Pattern("1444946567087.png").similar(0.80))

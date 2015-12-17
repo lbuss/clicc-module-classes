@@ -11,10 +11,11 @@ wanted = {
     'water_solubility_at_25_C': None,
     'degradation_rate_in_air': None,
     'degradation_rate_in_water': None,
-    'degradation_rate_in_soil': None,
+    'kDegredationInSoil': None,
     'degradation_rate_in_sediment': None,
     'bioconcentration_factor': None,
 }
+# BAF_fish
 
 search_for = {
     'MOL WT' : 'molecular_weight',
@@ -30,7 +31,7 @@ search_for = {
 search_fugacity = {
     'Air    ' : 'degradation_rate_in_air' ,
     'Water    ' : 'degradation_rate_in_water',
-    'Soil    ' : 'degradation_rate_in_soil',
+    'Soil    ' : 'kDegredationInSoil',
     'Sediment  ' : 'degradation_rate_in_sediment'
 }
 

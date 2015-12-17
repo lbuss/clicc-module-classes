@@ -1,11 +1,11 @@
 {
-"inputs_text": "C:\\Users\\Johanna\\Documents\\LawStuff\\module_scripting\\inputs.txt",
+"inputs_text": "C:\\Users\\Johanna\\Documents\\LawStuff\\module_code\\qsar\\inputs.txt",
 "sikuli_cmd": "C:\\Users\\Johanna\\SikuliX\\runsikulix.cmd",
-"script_path": "C:\\Users\\Johanna\\Documents\\LawStuff\\module_scripting\\",
-"results_folder": "C:\\Users\\Johanna\\Documents\\LawStuff\\module_scripting\\results",
-"run_epi": true,
-"run_test": true,
-"run_vega": true,
+"script_path": "C:\\Users\\Johanna\\Documents\\LawStuff\\module_code\\qsar\\",
+"results_folder": "C:\\Users\\Johanna\\Documents\\LawStuff\\module_code\\qsar\\results",
+"run_epi": false,
+"run_test": false,
+"run_vega": false,
 "parse_results": true,
 "query_chemspider": false
 }

@@ -72,10 +72,11 @@
 <pre class="sikuli-code">
 <span class="kw">import</span> sys
 <span class="kw">print</span> sys.argv
+
 smiles_location = sys.argv[<span class="dig">1</span>]
 output_folder = sys.argv[<span class="dig">2</span>]
 
-switchApp(<span class="str">"VegaNIC"</span>)
+switchApp(<span class="str">"VEGA in silico"</span>)
 <span class="kw">if</span> exists(<img src="1444947945179.png" />):
     <span class="skw">click</span>(<img src="1444947945179.png" />)
 <span class="skw">click</span>(Pattern(<img src="1444946567087.png" />).similar(<span class="dig">0.80</span>))

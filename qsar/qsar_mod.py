@@ -36,32 +36,32 @@ class QSARmod:
 
     def run(self):
         smiles_path = self.config['script_path'] + 'smiles.txt'
-        if config['query_chemspider']:
+        if self.config['query_chemspider']:
             # generate smiles from inputs. can be smiles, casrn, or common names
             ChemSpiderAPI.generate_smiles_with_chemspider(self.config['inputs_text'], smiles_path)
-        else:
-            ChemSpiderAPI.update_smiles_with_input_directly(self.config['inputs_text'], smiles_path)
+        # else:
+        #     ChemSpiderAPI.update_smiles_with_input_directly(self.config['inputs_text'], smiles_path)
 
         # execute batch file to run epi suite
-        if config['run_epi']:
+        if self.config['run_epi']:
             epi_batch_path = self.config['script_path'] + 'batch_files/run_epiweb_sikuli.cmd'
             e = Popen([epi_batch_path , smiles_path, self.config['results_folder']], cwd=self.config['script_path'])
             stdout, stderr = e.communicate()
 
         # execute batch file to run TEST
-        if config['run_test']:
+        if self.config['run_test']:
             test_batch_path = self.config['script_path'] + 'batch_files/run_test_sikuli.cmd'
             t = Popen([test_batch_path, smiles_path, self.config['results_folder']], cwd=self.config['script_path'])
             stdout, stderr = t.communicate()
 
         # execute batch file to run VEGA
-        if config['run_vega']:
+        if self.config['run_vega']:
             vega_batch_path = self.config['script_path'] + 'batch_files/run_vega_sikuli.cmd'
             v = Popen([vega_batch_path, smiles_path, self.config['results_folder']], cwd=self.config['script_path'])
             stdout, stderr = v.communicate()
 
         # not finished
-        if config['parse_results']:
-            epi_output = self.config['results_folder'] + '\\EPI_results'
+        if self.config['parse_results']:
+            epi_output = self.config['results_folder'] + '\\EPI_results.txt'
             chems = ParseEpi.parse(epi_output)
             return chems[0]

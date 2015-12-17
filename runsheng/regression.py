@@ -354,7 +354,7 @@ class training:
             print "Saving Finished"
 
     def load_network(self,name_of_the_net):
-        print "load existing trained network"
+        # print "load existing trained network"
         self.network=NetworkReader.readFrom(name_of_the_net)
         print "Succeed!"
 
@@ -453,7 +453,7 @@ class predicting:
 
         return median_rel_error
     def load_network(self,name_of_the_net):
-        print "load existing trained network"
+        # print "load existing trained network"
         network=NetworkReader.readFrom(name_of_the_net)
         print "Succeed!"
         return network
