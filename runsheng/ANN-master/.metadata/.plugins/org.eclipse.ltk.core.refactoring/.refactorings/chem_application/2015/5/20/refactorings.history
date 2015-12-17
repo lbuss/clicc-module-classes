@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Rename resource &apos;chem_application/CV_results.csv&apos; to &apos;CV_results_May15.csv&apos;" description="Rename resource &apos;CV_results.csv&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="CV_results.csv" name="CV_results_May15.csv" stamp="1431738345373" updateReferences="true"/>
-</session>

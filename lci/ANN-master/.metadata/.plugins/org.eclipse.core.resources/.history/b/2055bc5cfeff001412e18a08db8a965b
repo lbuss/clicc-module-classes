@@ -1,0 +1,65 @@
+'''
+Created on Apr 29, 2015
+
+@author: rsong_admin
+'''
+
+import ANN_setup as ann
+import pca
+import numpy as np
+
+
+def train_or_use(descs_name,target_name=None,network_name=None,train=True):
+    if train:
+        '''
+        This train a new network
+        '''
+        CED=ann.ANN(descs_name,target_name)
+        CED.do_pca(threshold_input=0.85)
+        raw_input("Paused!")
+        
+        CED.set_dataset()
+        CED.train_best_converge(training_times_input=5, learning_rate_input=0.001, maxEpochs_input=1000, verbose_input=True)
+#         CED.train_CV(n_folds=5, learning_rate_input=0.001, maxEpochs_input=1000, verbose_input=True)
+         
+        raw_input("Program Paused!!")
+        
+        CED.plot_diff(CED.target, CED.predicted_value)
+        CED.save_network(network_name)
+    
+    else:
+        
+        '''
+        This load the exsisting network and run prediction on it
+        '''
+
+        CED=ann.ANN(descs_name)
+        CED.load_network(network_name)
+        CED.do_pca(CED.network.indim)
+        prediction_results=CED.test_data(CED.network,CED.descriptors_pca);
+        Y=np.loadtxt(target_name,delimiter=',')
+        
+        CED.plot_diff(Y, prediction_results)
+        
+        save_name=target_name.replace('.csv','')
+        save_name=save_name+'_prediction.csv'
+        
+        np.savetxt(save_name, prediction_results, delimiter=',')
+    
+        
+
+
+if __name__ == '__main__':
+    
+    train_or_use('./data/descs_GWP_noNAs.csv', './data/Y_RE_v1.csv', './net/RE_May6.xml', train=True)
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+   

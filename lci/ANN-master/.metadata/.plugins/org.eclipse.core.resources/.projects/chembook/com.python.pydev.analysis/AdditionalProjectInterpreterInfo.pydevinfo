@@ -1,0 +1,43 @@
+-- VERSION_4
+-- START DISKCACHE
+E:\Github\ANN\.metadata\.plugins\org.eclipse.core.resources\.projects\chembook\com.python.pydev.analysis\v2_indexcache
+chembook|1432233785487|E:\Github\ANN\chembook\chembook.py
+counting_name|1432074829906|E:\Github\ANN\chembook\counting_name.py
+main|1432240272617|E:\Github\ANN\chembook\main.py
+-- END DISKCACHE
+-- START DICTIONARY
+7
+7=ChemBookSearch.__init__
+1=chembook
+2=counting_name
+6=ChemBookSearch.findClass_CAS
+5=ChemBookSearch.findChemical
+3=main
+4=ChemBookSearch
+-- END DICTIONARY
+-- START TREE 1
+9
+che|1|ChemBookSearch!9@
+cla|1|class_count!19@
+fha|1|fhand!19@
+fil|1|filewriter!19@
+lin|1|line!19@
+out|2|output!19@outputs!27@
+sor|1|sorted_count!19@
+tem|1|temp!19@
+tes|1|test1!27@
+-- END TREE
+-- START TREE 2
+11
+__i|1|__init__!4&10@
+bas|1|base_site!5&11@
+cla|1|className!6&11@
+col|1|col!7&11@
+fin|2|findChemical!4&10@findClass_CAS!4&10@
+get|3|getDataFromChemicalPropTable!4&10@getLinkList!4&10@getChemicalProperties!4&10@
+key|1|keyword!5&11@
+out|2|output_cate!7&11@output_CAS!7&11@
+row|1|row!7&11@
+sav|3|saveFields!4&10@save_or!7&11@saveToString!4&10@
+wor|2|workbook!7&11@worksheet!7&11@
+-- END TREE

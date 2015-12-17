@@ -1,0 +1,43 @@
+'''
+Created on May 5, 2015
+
+@author: rsong_admin
+'''
+import bs4
+from bs4 import BeautifulSoup
+import urllib2
+import requests
+#from pattern import web
+from collections import defaultdict
+import pickle
+import random 
+import itertools
+from itertools import chain
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+import Tkinter
+from Tkinter import *
+import tkFileDialog
+
+#import xlsxwrite
+
+
+class ChemBookSearch:     
+    def findChemical(self,keyword):
+        self.keyword = keyword
+        keyword=keyword.replace(' ','%20')
+        self.base_site='http://www.chemicalbook.com/'
+        base_url="http://www.chemicalbook.com/Search_EN.aspx?keyword="
+        url=base_url+keyword
+        website_html=requests.get(url).text
+        dom=web.Element(website_html)
+        tbls=dom.by_class("mid")
+        try:
+            first_result= tbls[0]
+            return self.getLinkList(first_result)
+        except Exception:
+            print "find chemical failed"
+            return False

@@ -1,0 +1,210 @@
+'''
+Created on May 5, 2015
+
+@author: rsong_admin
+'''
+import bs4
+from bs4 import BeautifulSoup
+import urllib2
+import requests
+from pattern import web
+from collections import defaultdict
+import pickle
+import random 
+import itertools
+from itertools import chain
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import numpy as np
+
+import Tkinter
+from Tkinter import *
+import tkFileDialog
+import csv
+import xlsxwriter
+from statsmodels.sandbox.regression.try_catdata import cat2dummy
+
+
+class ChemBookSearch:    
+    
+    
+    def __init__(self,filename):
+        self.output_CAS=[]
+        self.output_cate=[]
+        self.workbook = xlsxwriter.Workbook('./outputs/'+filename+'.xlsx')
+        self.worksheet = self.workbook.add_worksheet("Prod_Cat")
+        self.row = 0
+        self.col = 0
+    
+    def findClass_CAS (self,className,webpage=1):
+        CAS_out=[]
+        self.className=className;
+        base_site='http://www.chemicalbook.com/ProdClassDetail/'
+        added='_0_EN.htm'
+        url=base_site+self.className+added
+        
+        web_html=requests.get(url).text
+        soup = BeautifulSoup(web_html)
+        count = 0
+        for chem in soup.findAll('span'):
+            id=chem.get('id')
+#             print id
+            if id.endswith('CAS'):
+                count +=1
+                CAS=chem.string
+                if CAS is not None:
+                    CAS_out.append(CAS)
+                    
+            
+#         print count
+        
+        
+        return CAS_out
+        
+            
+     
+    def findChemical(self,keyword):
+        self.keyword = keyword
+        keyword=keyword.replace(' ','%20')
+        self.base_site='http://www.chemicalbook.com/'
+        base_url="http://www.chemicalbook.com/Search_EN.aspx?keyword="
+        url=base_url+keyword
+        website_html=requests.get(url).text
+        dom=web.Element(website_html)
+        tbls=dom.by_class("mid")
+
+        try:
+            first_result= tbls[0]
+            print "Results found"
+            return self.getLinkList(first_result)
+        except Exception:
+            print "find chemical failed"
+            return False
+        
+    def getLinkList(self, fr):
+        link_list=fr('li')
+        #print type(link_list)
+        if link_list:
+            link_dict={}
+            for link in link_list:
+                anc=link('a')[0]
+                link_dict[anc.content]=anc.attrs['href']
+            return self.getChemicalProperties(link_dict)
+        else: 
+            return False
+        
+    def getChemicalProperties(self, ld):
+        try:
+            relative_url=ld['Chemical Properties']
+            chem_prop_url=self.base_site+relative_url
+            return self.getDataFromChemicalPropTable(chem_prop_url)
+        except Exception:
+            return False
+        
+    def getDataFromChemicalPropTable(self, propURL):
+        pairs_dict={}
+        try:
+            chemInfo_html=requests.get(propURL).text
+            dom=web.Element(chemInfo_html)
+            tables=dom('table')
+
+            for table in tables:
+                innterTables=table('table')
+                for itable in innterTables:
+                    rows=itable("tr")
+                    for row in rows:
+                        cells=row('td')
+                        if (len(cells)==2):
+                            pairs_dict[cells[0].content]=cells[1].content
+            return self.saveFields(pairs_dict)
+                
+#                 return self.saveToString(pairs_dict)
+
+        except Exception:
+            return False
+    
+    def saveToString(self,pd):
+        CAS= pd.get('CAS:',None)
+        #MW=pd.get('MW:',None)
+        CASRN=[a.content for a in web.Element(CAS)('a b')]
+        products_cats= pd.get('Product Categories:',None)
+        
+        if products_cats is not None: 
+            prod_cats=[a.content for a in web.Element(products_cats)('a')]
+            
+        
+        
+        
+    
+    
+    def saveFields(self, pd):
+        
+        
+        products_cats= pd.get('Product Categories:',None)
+        prep_products= pd.get('Preparation Products',None)
+        raw_materials= pd.get('Raw materials',None)
+        prod_name=pd.get('Product Name:',None)
+        CAS= pd.get('CAS:',None)
+        MW=pd.get('MW:',None)
+        
+#         print prod_name
+#         print CAS
+#         raw_input("hahaha")
+        
+#         worksheet1 = workbook.add_worksheet("CASRN&MW")
+#         if CAS is not None: 
+#             CASRN=[a.content for a in web.Element(CAS)('a b')]
+#             name=[a.content for a in web.Element(prod_name)('a a')]
+# #             MW_number=[a.content for a in web.Element(MW)('a b')]
+# 
+#             print name
+#             raw_input("hahaha")
+#             worksheet1.write(0,0,CASRN[0])
+#             worksheet1.write(1,0,MW)
+#             worksheet1.write(2,0,prod_name)
+#             
+#         else: 
+#             worksheet1.write(0,0,'CASRN Not Found')        
+        
+       
+        
+        
+        if products_cats is not None: 
+            prod_cats=[a.content for a in web.Element(products_cats)('a')]
+            CASRN=[a.content for a in web.Element(CAS)('a b')]
+            col_this=0
+            self.worksheet.write(self.row, col_this, CASRN[0])
+            for cat in prod_cats:
+                col_this +=1 
+                self.worksheet.write(self.row,col_this,cat)
+            
+            print 'File saved'          
+        else: 
+            self.worksheet.write(0,1,'Product Categories Not Found')  
+            print 'Not Saved!'  
+        
+        self.row+=1      
+         
+#         worksheet3 = workbook.add_worksheet("Prep_Prod")    
+#         if prep_products is not None: 
+#             prep_cats=[a.content for a in web.Element(prep_products)('a')]
+#             row = 0
+#             col = 0
+#             for cat in prep_cats:
+#                 worksheet3.write(row, col, cat)
+#                 row +=1 
+#         else: 
+#             worksheet3.write(0,0,'Prep Products Not Found') 
+#         
+#         worksheet4 = workbook.add_worksheet("Raw_Materials") 
+#         if raw_materials is not None: 
+#             materials=[a.content for a in web.Element(raw_materials)('a')]
+#             process='->'.join(materials)
+#             worksheet4.write(0,0,process)
+#         else: 
+#             worksheet4.write(0,0,'Process Not Found')
+        
+        
+        
+        return True

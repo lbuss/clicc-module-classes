@@ -1,0 +1,14 @@
+'''
+Created on May 5, 2015
+
+@author: rsong_admin
+'''
+
+import chembook
+from chembook import ChemBookSearch
+
+test1=ChemBookSearch()
+
+test1.findChemical('1229-55-6')
+
+print test1

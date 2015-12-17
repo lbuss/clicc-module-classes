@@ -1,0 +1,39 @@
+'''
+Created on May 5, 2015
+
+@author: rsong_admin
+'''
+
+import chembook
+from chembook import ChemBookSearch
+
+
+test1=ChemBookSearch('DTSC_test_outputs_single')
+test1.findChemical('71549-78-5')
+
+
+
+# iter=0
+# with open('./data/DTSC_CAS_part18.csv') as myfile:
+#     for cas in myfile:
+#         if cas is not None:
+#             cas=cas.rstrip()
+#             iter+=1
+#             print iter
+#             print cas
+#             
+#             try:
+#                 test1.findChemical(cas)
+#             except:
+#                 print "looking for chemical failed at ", iter
+#                 raw_input("Paused")
+#                 continue
+#         else:
+#             print "Empty CAS!"
+#   
+# print "Finished!"
+# test1.workbook.close()
+
+
+# test=ChemBookSearch()
+# test.findChemical("Dimethyl hexane/N-Octane")
