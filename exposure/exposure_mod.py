@@ -2,8 +2,7 @@ import math
 from exposure_constants import *
 
 class ExposureMod:
-    def __init__(self, inputs):
-        # really no need to write this all out with a valid input object...may just sample inputs directly in future rev.
+    def run(self, inputs={}):
         if inputs:
             self.properties = {}
             # Concentrations - kg/m^3
@@ -31,18 +30,8 @@ class ExposureMod:
             # for testing purposes
             self.properties = default_inputs
 
-
-    def expand_variables(self):
-        # expand variables from excel defined dicts to individual object attributes.
-        # the only purpose of this is to be able to copy in the excel formulas
-        # and references tables easily. does require appending self to each formula value.
-        for table in [self.properties, ingestion_food, ingestion_water, inhalation]:
-            for key, value in table.items():
-                setattr(self, key, value)
-
-
-    def run(self):
         self.expand_variables()
+
         self.lambdat = 10*(self.kDegredationInSoil*3600)*(60*60*24)
         self.RCF = min(200,0.82+0.0303*self.kOctanolWater**0.77)
         self.BAF_soil_exp =	self.densitySoil2/self.densityPlant*((0.784*math.exp(-(((math.log10(self.kOctanolWater))-1.78)**2.0)/2.44)*self.Qtrans)/((self.MTC*2*self.LAI)/(0.3+0.65/self.kAirWater+0.015*self.kOctanolWater/self.kAirWater)+self.Vplant*(self.lambdag+self.lambdat)))
@@ -79,5 +68,13 @@ class ExposureMod:
         results['In_ingunexp'] = self.agricultural_soil_water*(self.BAF_soil_unexp/self.densitySoil2)*self.ing_unexp*self.T*self.p
         results['In_inmeat'] = ((self.air*self.meat_air+(self.aerosol*(self.BAF_airp_exp/self.densityAir)+self.air*(self.BAF_airp_exp/self.densityAir))*self.meat_veg)+(self.freshwater*(self.meat_water/self.densityWater))+(self.agricultural_soil*(self.meat_soil/self.densitySoil2)+self.agricultural_soil_water*(self.BAF_soil_exp/self.densitySoil2)*self.meat_veg))*self.BTF_meat*self.ing_meat*self.T*self.p
         results['In_milk'] =((self.air*self.dairy_air+(self.aerosol*(self.BAF_airp_exp/self.densityAir)+self.air*(self.BAF_airp_exp/self.densityAir))*self.dairy_veg)+(self.freshwater*(self.dairy_water/self.densityWater))+(self.agricultural_soil*(self.dairy_soil/self.densitySoil2)+self.agricultural_soil_water*(self.BAF_soil_exp/self.densitySoil2)*self.dairy_veg))*self.BTF_dairy*self.ing_dairy*self.T*self.p
-        
+        print results
         return results
+
+    def expand_variables(self):
+        # expand variables from excel defined dicts to individual object attributes.
+        # the only purpose of this is to be able to copy in the excel formulas
+        # and references tables easily. does require appending self to each formula value.
+        for table in [self.properties, ingestion_food, ingestion_water, inhalation]:
+            for key, value in table.items():
+                setattr(self, key, value)
